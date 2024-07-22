@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  pocketbase:
+    build:
+      context: .
+    container_name: trackfinity-db
+    restart: unless-stopped
+    environment:
+      ENV1: ENV1
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./pb_data:/pb/pb_data
+      - ./pb_migrations:/pb/pb_migrations
+    healthcheck: #optional (recommended) since v0.10.0
+      test: wget --no-verbose --tries=1 --spider http://localhost:8090/api/health || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 5
